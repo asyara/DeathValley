@@ -1,0 +1,5 @@
+db:
+    username: root
+    password: root
+    driver: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost/user_bank_list
