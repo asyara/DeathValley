@@ -1,3 +1,5 @@
+package entity;
+
 public class Account {
 
     private int accountId;
@@ -8,6 +10,11 @@ public class Account {
 
     public Account(int accountId, int account, int userId) {
         this.accountId = accountId;
+        this.account = account;
+        this.userId = userId;
+    }
+
+    public Account(int account, int userId) {
         this.account = account;
         this.userId = userId;
     }
@@ -37,8 +44,28 @@ public class Account {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Account account1 = (Account) o;
+
+        if (accountId != account1.accountId) return false;
+        if (account != account1.account) return false;
+        return userId == account1.userId;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = accountId;
+        result = 31 * result + account;
+        result = 31 * result + userId;
+        return result;
+    }
+
+    @Override
     public String toString() {
-        return "Account{" +
+        return "entity.Account{" +
                 "accountId=" + accountId +
                 ", account=" + account +
                 ", userId=" + userId +

@@ -4,16 +4,14 @@
     <title>BankLists</title>
 </head>
 <body>
-<form name="richest" method="GET" action="">
+<form action="AppServlet" method="POST">
     <p>
-        <input type="text" size="40" placeholder="richest user">
-        <input type="button" name="getRich" value="get"/>
+        <input type="text" value="${richestUser}">
+        <input type="submit" name="action" value="getRichestUser"/>
     </p>
-</form>
-<form name="sum" method="GET" action="">
     <p>
-        <input type="text" size="40" placeholder="account sum">
-        <input type="button" name="getSum" value="get"/>
+        <input type="text" value="${summa}">
+        <input type="submit" name="action" value="getSum"/>
     </p>
 </form>
 </body>
