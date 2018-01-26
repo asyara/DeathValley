@@ -1,22 +1,31 @@
 package entity;
 
+import javax.persistence.*;
+
+/**
+ * Created by DmitryL on 24.01.2018.
+ */
+@Entity
+@Table(name = "account", schema = "user_bank_list")
 public class Account {
 
+    @Id
+    @GeneratedValue
+    @Column(name = "accountId", nullable = false, updatable = false)
     private int accountId;
+
+    @Column(name = "account")
     private int account;
-    private int userId;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
 
     public Account() {}
 
-    public Account(int accountId, int account, int userId) {
-        this.accountId = accountId;
+    public Account(int account, User user) {
         this.account = account;
-        this.userId = userId;
-    }
-
-    public Account(int account, int userId) {
-        this.account = account;
-        this.userId = userId;
+        this.user = user;
     }
 
     public int getAccountId() {
@@ -32,43 +41,24 @@ public class Account {
     }
 
     public void setAccount(int account) {
+
         this.account = account;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Account account1 = (Account) o;
-
-        if (accountId != account1.accountId) return false;
-        if (account != account1.account) return false;
-        return userId == account1.userId;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = accountId;
-        result = 31 * result + account;
-        result = 31 * result + userId;
-        return result;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
-        return "entity.Account{" +
+        return "Account{" +
                 "accountId=" + accountId +
                 ", account=" + account +
-                ", userId=" + userId +
+                ", user=" + user +
                 '}';
     }
 }

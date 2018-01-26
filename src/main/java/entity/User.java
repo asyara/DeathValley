@@ -1,29 +1,20 @@
 package entity;
 
-public class User {
+import javax.persistence.*;
 
+/**
+ * Created by DmitryL on 24.01.2018.
+ */
+@Entity
+@Table(name = "user", schema = "user_bank_list")
+public class User {
     private int userId;
     private String name;
-    private String surname;
+    private String sureName;
 
-    public User() {}
-
-    public User(int userId, String name, String surname) {
-        this.userId = userId;
-        this.name = name;
-        this.surname = surname;
-    }
-
-    public User(String name, String surname) {
-        this.name = name;
-        this.surname = surname;
-    }
-
-    public User(int UserId) {
-        this.userId = UserId;
-    }
-
-
+    @Id
+    @GeneratedValue
+    @Column(name = "userId", nullable = false, updatable = false)
     public int getUserId() {
         return userId;
     }
@@ -32,6 +23,8 @@ public class User {
         this.userId = userId;
     }
 
+    @Basic
+    @Column(name = "name", length = 45)
     public String getName() {
         return name;
     }
@@ -40,40 +33,22 @@ public class User {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
+    @Basic
+    @Column(name = "sureName", length = 45)
+    public String getSureName() {
+        return sureName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (userId != user.userId) return false;
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        return surname != null ? surname.equals(user.surname) : user.surname == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = userId;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (surname != null ? surname.hashCode() : 0);
-        return result;
+    public void setSureName(String sureName) {
+        this.sureName = sureName;
     }
 
     @Override
     public String toString() {
-        return "entity.User{" +
+        return "User{" +
                 "userId=" + userId +
                 ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
+                ", sureName='" + sureName + '\'' +
                 '}';
     }
 }

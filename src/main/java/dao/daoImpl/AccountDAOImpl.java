@@ -1,80 +1,53 @@
 package dao.daoImpl;
 
-import service.DBconnect;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import dao.AccountDAOInterface;
 import entity.Account;
-import java.sql.*;
+import service.HibernateSessionFactory;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AccountDAOImpl implements AccountDAOInterface {
 
-    private DBconnect connect;
-
-    public AccountDAOImpl() {
-        this.connect = new DBconnect();
-    }
-
     public void create(Account account) {
-        String sql = "INSERT INTO account VALUES(" + account.getAccountId() + "," + account.getAccount() + "," + account.getUserId() + ");";
-        try {
-            PreparedStatement ps = connect.getConnection().prepareStatement(sql);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        Transaction tr = session.beginTransaction();
+        session.save(account);
+        tr.commit();
+        session.close();
     }
 
-    public Account getById(int id) {
-        Account account = new Account();
-        String sql = "SELECT * FROM account WHERE accountId=" + id + ";";
-        try {
-            PreparedStatement ps = connect.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                account.setAccountId(rs.getInt("accountId"));
-                account.setAccount(rs.getInt("account"));
-                account.setUserId(rs.getInt("userId"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    return account;
+    public Account getById(int accountId) {
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        Account account = (Account) session.load(Account.class, accountId);
+        session.close();
+        return account;
     }
 
-    public ArrayList<Account> getAll() {
-        ArrayList<Account> accountList = new ArrayList<Account>();
-        String sql = "SELECT * FROM account;";
-        try {
-            PreparedStatement ps = connect.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                accountList.add(new Account(rs.getInt("accountId"), rs.getInt("account"), rs.getInt("userId")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return accountList;
+    public List<Account> getAll() {
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        Criteria criteria = session.createCriteria(Account.class);
+        return criteria.list();
     }
 
     public void update(Account account) {
-        String sql = "UPDATE account SET account =" + account.getAccount() + ", userId =" + account.getUserId() + " WHERE accountId=" + account.getAccountId() + ";";
-        try {
-            PreparedStatement ps = connect.getConnection().prepareStatement(sql);
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        Transaction tr = session.beginTransaction();
+        session.update(account);
+        tr.commit();
+        session.close();
     }
 
-    public void delete(Account account) {
-        String sql = "DELETE FROM account WHERE accountId='" + account.getAccountId() + "';";
-        try {
-            PreparedStatement ps = connect.getConnection().prepareStatement(sql);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+    public void delete(int accountId) {
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        Transaction tr = session.beginTransaction();
+        session.delete(session.get(Account.class, accountId));
+        tr.commit();
+        session.close();
     }
 }

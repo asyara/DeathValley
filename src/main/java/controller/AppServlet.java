@@ -1,5 +1,6 @@
 package controller;
 
+import entity.Account;
 import service.Service;
 
 import javax.servlet.ServletException;
@@ -24,7 +25,7 @@ public class AppServlet extends HttpServlet {
         Service srv = new Service();
         String action = request.getParameter("action");
         if ("getRichestUser".equals(action)) {
-            request.setAttribute("richestUser", srv.getRichestUser().getName() + " " + srv.getRichestUser().getSurname());
+            request.setAttribute("richestUser", srv.getRichestUser().getName() + " " + srv.getRichestUser().getSureName());
         } else if ("getSum".equals(action)) {
             request.setAttribute("summa", srv.getAccountsSum());
         }
@@ -32,5 +33,13 @@ public class AppServlet extends HttpServlet {
         request.getRequestDispatcher("/index.jsp").forward(request, response);
 
     }
+
+    public static void main(String[] args) {
+        Service service = new Service();
+        for (Account account : service.getAllAccounts()) {
+            System.out.println(account);
+        }
+    }
+
 }
 
