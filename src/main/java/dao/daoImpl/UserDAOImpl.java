@@ -1,6 +1,7 @@
 package dao.daoImpl;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import dao.UserDAOInterface;
@@ -50,11 +51,16 @@ public class UserDAOImpl implements UserDAOInterface {
     }
 
     public User getRichestUser() {
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        Criteria criteria = session.createCriteria(User.class);
-        criteria.createCriteria("SELECT u FROM User u WHERE u.userId IN (SELECT a.userId FROM Account a GROUP BY a.userId HAVING SUM(a.account) >= ALL (SELECT SUM(a2.account) FROM Account a2 GROUP BY a2.userId))");
 
-        return (User) criteria.uniqueResult();
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        Query query = session.createQuery(
+                "SELECT u FROM User u " +
+                        "WHERE userId IN (" +
+                        "SELECT accountId FROM Account GROUP BY userId HAVING SUM(account) >= ALL (" +
+                        "SELECT SUM(account) FROM Account GROUP BY userId))");
+        List str = query.list();
+        User user = (User) str.get(0);
+        return user;
     }
 }
 

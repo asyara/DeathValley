@@ -1,8 +1,10 @@
 package service;
+
 import dao.daoImpl.AccountDAOImpl;
 import dao.daoImpl.UserDAOImpl;
 import entity.Account;
 import entity.User;
+
 import java.util.List;
 
 public class Service {
@@ -13,7 +15,6 @@ public class Service {
     public List<Account> getAllAccounts() {
         AccountDAOImpl accDao = new AccountDAOImpl();
         return accDao.getAll();
-
     }
 
     public User getRichestUser() {
@@ -22,7 +23,7 @@ public class Service {
     }
 
     public int getAccountsSum() {
-        List <Account> accounts = getAllAccounts();
+        List<Account> accounts = getAllAccounts();
         int sum = 0;
         for (Account acc : accounts) {
             sum += acc.getAccount();

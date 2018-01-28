@@ -6,15 +6,21 @@ import javax.persistence.*;
  * Created by DmitryL on 24.01.2018.
  */
 @Entity
-@Table(name = "user", schema = "user_bank_list")
+@Table(name = "user")
 public class User {
-    private int userId;
-    private String name;
-    private String sureName;
 
     @Id
     @GeneratedValue
-    @Column(name = "userId", nullable = false, updatable = false)
+    @Column(name = "userId", nullable = false)
+    private int userId;
+
+    @Column(name = "name", length = 45)
+    private String name;
+
+    @Column(name = "sureName", length = 45)
+    private String sureName;
+
+
     public int getUserId() {
         return userId;
     }
@@ -23,8 +29,6 @@ public class User {
         this.userId = userId;
     }
 
-    @Basic
-    @Column(name = "name", length = 45)
     public String getName() {
         return name;
     }
@@ -33,8 +37,6 @@ public class User {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "sureName", length = 45)
     public String getSureName() {
         return sureName;
     }

@@ -21,7 +21,8 @@ public class Account {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    public Account() {}
+    public Account() {
+    }
 
     public Account(int account, User user) {
         this.account = account;
